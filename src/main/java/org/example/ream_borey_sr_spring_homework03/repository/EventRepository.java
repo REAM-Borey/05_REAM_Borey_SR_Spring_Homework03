@@ -41,7 +41,8 @@ public interface EventRepository {
             @Result(property = "eventId",column = "event_id"),
             @Result(property = "eventName",column = "event_name"),
             @Result(property = "eventDate",column = "event_date"),
-            @Result(property = "venue",column = "venue_id",one = @One(select = "org.example.ream_borey_sr_spring_homework03.repository.VenueRepository.createAttendee")),
+            @Result(property = "venue",column = "venue_id",
+                    one = @One(select = "org.example.ream_borey_sr_spring_homework03.repository.VenueRepository.createAttendee")),
             @Result(property = "attendee",column = "event_id",
                     many = @Many(select = "org.example.ream_borey_sr_spring_homework03.repository.EventAttendeeRepository.createEventAttendee"))
     })
@@ -60,13 +61,16 @@ public interface EventRepository {
     @Delete("""
         DELETE FROM events  WHERE event_id = #{id}
         """)
-    @Results(id = "Event",value = {
-            @Result(property = "eventId",column = "event_id"),
-            @Result(property = "eventName",column = "event_name"),
-            @Result(property = "eventDate",column = "event_date"),
-            @Result(property = "venue",column = "venue_id"),
-            @Result(property = "attendee",column = "event_id")
-    })
+//    @Results(id = "Event",value = {
+//            @Result(property = "eventId",column = "event_id"),
+//            @Result(property = "eventName",column = "event_name"),
+//            @Result(property = "eventDate",column = "event_date"),
+//            @Result(property = "venue",column = "venue_id",
+//                    one = @One(select = "org.example.ream_borey_sr_spring_homework03.repository.VenueRepository.deleteVenueById")),
+//            @Result(property = "attendee",column = "event_id",
+//            many = @Many(select = "org.example.ream_borey_sr_spring_homework03.repository.EventAttendeeRepository.deleteEventAttendeeByEventId"))
+//    })
+    @ResultMap("EventMapper")
     Event deleteEventById(int id);
 
     /*

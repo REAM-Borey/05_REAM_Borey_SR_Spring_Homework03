@@ -22,8 +22,8 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Event>>> getAllEvent(@RequestParam(defaultValue = "1") @Positive int page,
-                                                                @RequestParam(defaultValue = "10") @Positive int size){
+    public ResponseEntity<ApiResponse<List<Event>>> getAllEvent(@RequestParam(defaultValue = "1") int page,
+                                                                @RequestParam(defaultValue = "10") int size){
         return ResponseEntity.ok(
                 ApiResponse.<List<Event>>builder()
                         .message("Get all event is successfully")
@@ -34,7 +34,7 @@ public class EventController {
         );
     }
     @GetMapping("{event-id}")
-    public ResponseEntity<ApiResponse<Event>> getEventById(@Param("event-id") @Positive int id){
+    public ResponseEntity<ApiResponse<Event>> getEventById(@Param("event-id") int id){
         return ResponseEntity.ok(
                 ApiResponse.<Event>builder()
                         .message("Get event by id is successfully")
@@ -58,7 +58,7 @@ public class EventController {
     }
 
     @PutMapping("{event-id}")
-    public ResponseEntity<ApiResponse<Event>> updateEventById(@Param("event-id")@Positive int id,@Valid @RequestBody EventRequest eventRequest){
+    public ResponseEntity<ApiResponse<Event>> updateEventById(@Param("event-id") int id, @RequestBody EventRequest eventRequest){
         return ResponseEntity.ok(
                 ApiResponse.<Event>builder()
                         .message("Update event by id is successfully")

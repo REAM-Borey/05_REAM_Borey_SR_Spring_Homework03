@@ -21,7 +21,7 @@ public class EventServiceImpl implements EventService {
     private final EventAttendeeRepository eventAttendeeRepository;
 
     @Override
-    public List<Event> getAllEvent(@Positive int page,@Positive int size) {
+    public List<Event> getAllEvent( int page, int size) {
         List<Event>event = eventRepository.getAllEvent(page,size);
         if (event == null || event.equals(0)){
             throw new NotFoundException("Event doesn't has in");
@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event getEventById(@Positive int id) {
+    public Event getEventById( int id) {
         event = eventRepository.getEventById(id);
         if (event == null || event.equals(0)){
             throw new NotFoundException("Invalid id");
@@ -40,7 +40,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event createEvent(@Valid EventRequest eventRequest) {
+    public Event createEvent( EventRequest eventRequest) {
         event = eventRepository.createEvent(eventRequest);
         if (!eventRequest.getAttendeesId().isEmpty()) {
             for (int attendeeId : eventRequest.getAttendeesId()) {
@@ -51,10 +51,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event updateEventById(@Positive int id,@Valid EventRequest eventRequest) {
+    public Event updateEventById( int id, EventRequest eventRequest) {
         event = eventRepository.updateEventById(id,eventRequest);
         if (event.getEventId() == 0 ||event.equals(null) ){
             throw new NotFoundException("Invalid id");
+        }
+        if (!eventRequest.getAttendeesId().isEmpty()) {
+            eventAttendeeRepository.deleteEventAttendeeByEventId(id);
+            for (int attendeeId : eventRequest.getAttendeesId()) {
+                eventAttendeeRepository.createEventAttendee(id, attendeeId);
+            }
         }
         return eventRepository.updateEventById(id,eventRequest);
     }
@@ -63,7 +69,7 @@ public class EventServiceImpl implements EventService {
     public Event deleteEventById(int id) {
         event = eventRepository.deleteEventById(id);
         if (event == null){
-            throw new NotFoundException("Invalid id");
+            throw new NotFoundException("Invalid");
         }
         return eventRepository.deleteEventById(id);
     }
