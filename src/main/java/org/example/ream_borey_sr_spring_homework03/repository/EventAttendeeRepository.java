@@ -16,18 +16,18 @@ public interface EventAttendeeRepository {
             @Result(property = "id", column = "attendee_id"),
             @Result(property = "name", column = "attendee_name")
     })
-    public List<Attendee> getAttendeesByEventId(int eventId);
+     List<Attendee> getAttendeesByEventId(int eventId);
 
     @Insert("""
             INSERT INTO event_attendee (event_id, attendee_id)
             VALUES (#{event_id}, #{attendee_id});
             """)
-    public void createEventAttendee(@Param("event_id") int eventId, @Param("attendee_id") int attendeeId);
+    void createEventAttendee(@Param("event_id") int eventId, @Param("attendee_id") int attendeeId);
 
     @Delete("""
             DELETE FROM event_attendee
             WHERE event_id = #{event_id};
             """)
-    public void deleteEventAttendeeByEventId(@Param("event_id") int eventId);
+    void deleteEventAttendeeByEventId(@Param("event_id") int eventId);
 
 }

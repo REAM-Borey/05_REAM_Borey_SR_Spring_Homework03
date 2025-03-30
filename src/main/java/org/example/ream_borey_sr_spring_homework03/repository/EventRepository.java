@@ -41,9 +41,9 @@ public interface EventRepository {
             @Result(property = "eventId",column = "event_id"),
             @Result(property = "eventName",column = "event_name"),
             @Result(property = "eventDate",column = "event_date"),
-            @Result(property = "venue",column = "venue_id",one = @One(select = "org.example.ream_borey_sr_spring_homework03.repository.VenueRepository.createVenue")),
+            @Result(property = "venue",column = "venue_id",one = @One(select = "org.example.ream_borey_sr_spring_homework03.repository.VenueRepository.createAttendee")),
             @Result(property = "attendee",column = "event_id",
-                    many = @Many(select = "org.example.ream_borey_sr_spring_homework03.repository.EventAttendeeRepository.createAttendee"))
+                    many = @Many(select = "org.example.ream_borey_sr_spring_homework03.repository.EventAttendeeRepository.createEventAttendee"))
     })
     Event createEvent(@Param("req") EventRequest eventRequest);
 
@@ -58,9 +58,15 @@ public interface EventRepository {
 
 
     @Delete("""
-        delete from events where event_id = #{id}
+        DELETE FROM events  WHERE event_id = #{id}
         """)
-    @ResultMap("EventMapper")
+    @Results(id = "Event",value = {
+            @Result(property = "eventId",column = "event_id"),
+            @Result(property = "eventName",column = "event_name"),
+            @Result(property = "eventDate",column = "event_date"),
+            @Result(property = "venue",column = "venue_id"),
+            @Result(property = "attendee",column = "event_id")
+    })
     Event deleteEventById(int id);
 
     /*
